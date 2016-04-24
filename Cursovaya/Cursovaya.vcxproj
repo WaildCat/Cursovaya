@@ -147,7 +147,9 @@
     <ClInclude Include="DummySoldier.h" />
     <ClInclude Include="DummyVehicle.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="Localization.h" />
     <ClInclude Include="Officer.h" />
+    <ClInclude Include="OfficerHelper.h" />
     <ClInclude Include="Soldier.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Weapon.h" />
@@ -159,8 +161,10 @@
     <ClCompile Include="DummySoldier.cpp" />
     <ClCompile Include="DummyVehicle.cpp" />
     <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="Localization.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Officer.cpp" />
+    <ClCompile Include="OfficerHelper.cpp" />
     <ClCompile Include="Soldier.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Weapon.cpp" />

@@ -1,4 +1,5 @@
 #include "Interface.h"
+#include "Localization.h"
 #include <stdio.h>
 #include <locale.h>
 #include <ctime>
@@ -9,6 +10,7 @@ int main()
 	setlocale(0, "RUS");
 	srand(time(NULL));
 	Interface myInterface;
+	Localization::GetInstance().InitLocalization();
 	myInterface.ControlOfficer();
 	return 0;
 }

@@ -12,9 +12,10 @@ class Officer
 
 	int chosenDistance;
 
-	void AddSoldier();
-	void FireSoldier();
-	void ShowCurrentStatus();
+	int AddSoldier();
+	int ChoseSoldier();
+	int FireSoldier();
+	void AskHelper();
 	void SetDistance(int*);
 	DummySoldier SetTarget();
 

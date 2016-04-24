@@ -4,9 +4,9 @@ class Soldier;
 class Interface
 {
 	void ControlSoldier(Soldier&, int);
-	
+	void ControlHelper();
 	void InitInterface();
-	void ReturnToOfficer();
+
 public:
 	void ControlOfficer();
 	Interface();

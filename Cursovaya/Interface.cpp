@@ -1,6 +1,8 @@
 #include "Interface.h"
+#include "Localization.h"
 #include "Soldier.h"
 #include "Officer.h"
+#include "OfficerHelper.h"
 #include "DummySoldier.h"
 #include <iostream>
 #include <conio.h>
@@ -19,64 +21,127 @@ Interface::~Interface()
 
 void Interface::ControlSoldier(Soldier &Private, int distance)
 {
-	int key;
+	int key, succes;
 	do
 	{
 		cout << endl;
-		std::cout << "1 - Взять оружие" << std::endl;
-		std::cout << "2 - Выстрелить из оружия" << std::endl;
-		std::cout << "3 - Перезарядить оружие" << std::endl;
-		std::cout << "4 - Выбросить оружие" << std::endl;
-		std::cout << "5 - Вернуться назад" << std::endl;
-		std::cout << "ESC - выход" << std::endl;
+		std::cout << "1 - " << GetLocStr(9) << std::endl;
+		std::cout << "2 - " << GetLocStr(10) << std::endl;
+		std::cout << "3 - " << GetLocStr(11) << std::endl;
+		std::cout << "4 - " << GetLocStr(12) << std::endl;
+		std::cout << "5 - " << GetLocStr(7) << std::endl;
+		std::cout << "ESC - " << GetLocStr(8) << std::endl;
+		key = getch();
+		switch (key)
+		{
+
+		case '1':
+		{
+			system("cls");
+
+			if (Private.MyGun)
+			{
+				cout << "\n" << GetLocStr(13) << "\n";
+				break;
+			}
+			else
+			{
+				string wName;
+				cout << "\n" << GetLocStr(14) << "\n";
+				cin >> wName;
+
+				succes = Private.TakeWeapon(wName);
+
+				if (succes == 2)
+					cout << "\n" << GetLocStr(15) << "\n";
+				else if (succes == 1) {
+					cout << "\n" << GetLocStr(13) << "\n";
+				}
+
+				else if (succes == 3)
+					cout << "\n" << GetLocStr(16) << "\n";
+				else
+					cout << "\n" << GetLocStr(17) << "\n";
+				break;
+			}
+		}
+
+		case '2':
+			system("cls");
+			succes = Private.Shoot(distance);
+			if (succes)
+			{
+				if (succes == 2)
+					cout << GetLocStr(18) << endl;
+				else if (succes == 1)
+					cout << GetLocStr(19) << endl;
+				else
+				{
+					cout << GetLocStr(24) << endl;
+					break;
+				}
+				cout << GetLocStr(20) << Private.getMyGunHolder() << GetLocStr(21) << endl;
+			}
+			else
+				cout << GetLocStr(22);
+			break;
+
+		case '3':
+			system("cls");
+			succes = Private.ReloadWeapon();
+			if (succes == 1)
+				cout << GetLocStr(24) << endl;
+			break;
+
+		case '4':
+			system("cls");
+			if (Private.DropWeapon() == 0)
+				cout << "\n" << GetLocStr(23) << "\n";
+			else
+				cout << "\n" << GetLocStr(24) << "\n";
+			break;
+		case '5':
+		{
+			system("cls");
+			Localization::GetInstance().SwitchLang();
+			break;
+		}
+		}
+		std::cout << std::endl;
+	} while (key != 27);
+	system("cls");
+	return;
+}
+
+void Interface::ControlHelper()
+{
+	int key;
+	do
+	{
+		std::cout << std::endl;
+		std::cout << GetLocStr(35) << std::endl;
+		std::cout << "1 - " << GetLocStr(27) << std::endl;
+		std::cout << "2 - " << GetLocStr(28) << std::endl;
+		std::cout << "3 - " << GetLocStr(29) << std::endl;
+		std::cout << "ESC - " << GetLocStr(8) << std::endl;
 		key = getch();
 		switch (key)
 		{
 		case '1':
-		{
-			int fl = 0;
-
-			if (Private.MyGun)
-			{
-				cout << "\nУ вас уже есть оружие\n";
-				fl = 1;
-			}
-
-			if (fl == 0)
-				continue;
-			else
-				break;
-
-			string wName;
-			cout << "\nВведите название оружия, которое необходимо взять:\n";
-			cin >> wName;
-			Private.TakeWeapon(wName);
+			system("cls");
+			std::cout << GetHelpInfo(1) << std::endl;
 			break;
-		}
 		case '2':
-			if (Private.Shoot(distance))
-			{
-				if (Private.Shoot(distance) == 2)
-					cout << "Промах" << endl;
-				else
-					cout << "Попадание" << endl;
-				cout << "Осталось " << Private.getMyGunHolder() << " боеприпасов" << endl;
-			}
-			else
-				cout << "Перезарядите оружие";
+			system("cls");
+			std::cout << GetHelpInfo(2) << std::endl;
 			break;
 		case '3':
-			Private.ReloadWeapon();
-			break;
-		case '4':
-			Private.DropWeapon();
-			break;
-		case '5':
-			ReturnToOfficer();
+			system("cls");
+			std::cout << GetHelpInfo(3) << std::endl;
 			break;
 		}
-		std::cout << std::endl;
 	} while (key != 27);
+	system("cls");
 	return;
 }
 
@@ -88,43 +153,55 @@ void Interface::ControlOfficer()
 	do
 	{
 		cout << endl;
-		std::cout << "1 - Добавить солдата" << std::endl;
-		std::cout << "2 - Уволить солдата" << std::endl;
-		std::cout << "3 - Показать текущий статус" << std::endl;
-		std::cout << "4 - Задать дальность" << std::endl;
-		std::cout << "5 - Выбрать цель" << std::endl;
-		std::cout << "6 - Перейти к управлению солдатом" << std::endl;
-		std::cout << "ESC - выход" << std::endl;
+		std::cout << "1 - " << GetLocStr(1) << std::endl;
+		std::cout << "2 - " << GetLocStr(2) << std::endl;
+		std::cout << "3 - " << GetLocStr(3) << std::endl;
+		std::cout << "4 - " << GetLocStr(4) << std::endl;
+		std::cout << "5 - " << GetLocStr(5) << std::endl;
+		std::cout << "6 - " << GetLocStr(6) << std::endl;
+		std::cout << "7 - " << GetLocStr(7) << std::endl;
+		std::cout << "ESC - " << GetLocStr(8) << std::endl;
 		key = getch();
 		switch (key)
 		{
 		case '1':
+			system("cls");
 			General.AddSoldier();
 			break;
 		case '2':
+			system("cls");
 			General.FireSoldier();
 			break;
 		case '3':
-			General.ShowCurrentStatus();
+			system("cls");
+			ControlHelper();
 			break;
 		case '4':
-			cout << "Задайте расстояние до цели: " << endl;
+				 system("cls");
+			cout << GetLocStr(25) << endl;
 			General.SetDistance(&(General.chosenDistance));
 			break;
 		case '5':
+			system("cls");
 			General.SetTarget();
 			break;
 		case '6':
+		{
+			system("cls");
 			Soldier Private1;
-			Interface::ControlSoldier(Private1, General.chosenDistance);
+			ControlSoldier(Private1, General.chosenDistance);
 			break;
+		}
+		case '7':
+		{
+			system("cls");
+			Localization::GetInstance().SwitchLang();
+			break;
+		}
 		}
 		std::cout << std::endl;
 	} while (key != 27);
 	return;
 }
 
-void Interface::ReturnToOfficer()
-{
-}
 
