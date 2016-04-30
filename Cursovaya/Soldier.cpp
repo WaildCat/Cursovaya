@@ -1,5 +1,6 @@
 #include "Soldier.h"
 #include "OfficerHelper.h"
+#include "ProgrammerHelper.h"
 #include "Gun.h"
 #include <iostream>
 #include <fstream>
@@ -52,6 +53,7 @@ int Soldier::TakeWeapon(std::string name)
 			return 2;
 		}
 		else
+			WriteFile(wNameFromFile);
 		{
 			while (!myWeapon.eof())
 			{

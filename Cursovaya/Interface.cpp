@@ -6,6 +6,8 @@
 #include "DummySoldier.h"
 #include <iostream>
 #include <conio.h>
+#include <vector>
+#include <string>
  
 using namespace std;
 
@@ -165,9 +167,22 @@ void Interface::ControlOfficer()
 		switch (key)
 		{
 		case '1':
+		{
 			system("cls");
-			General.AddSoldier();
+			std::string pName;
+			std::vector<std::string> myName;
+			std::cout << GetLocStr(39);
+			std::cin >> pName;
+			myName.push_back(pName);
+			std::cout << GetLocStr(40);
+			std::cin >> pName;
+			myName.push_back(pName);
+			std::cout << GetLocStr(41);
+			std::cin >> pName;
+			myName.push_back(pName);
+			General.AddSoldier(myName);
 			break;
+		}
 		case '2':
 			system("cls");
 			General.FireSoldier();
