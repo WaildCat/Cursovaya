@@ -1,4 +1,4 @@
-Кто Нибудь 100 100
-Kto Nibud LS 1001 2 3 
+Кто Нибудь 100 100 1
+Kto Nibud LS 100 2
 
-1 2 3 
+arnold shvarc2 lol lol2 100 3

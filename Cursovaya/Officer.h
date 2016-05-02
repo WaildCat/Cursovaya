@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "ProgrammerHelper.h"
 
 class Soldier;
 class Vehicle;
@@ -13,9 +14,10 @@ class Officer
 	friend class Interface;
 
 	int chosenDistance;
-	int AddSoldier(std::vector<std::string> &);
-	int ChoseSoldier();
+	int AddSoldier(templateIO&);
+	int ChoseSoldier(templateIO&);
 	int FireSoldier();
+	int RemoveSoldier();
 
 
 	void WriteSoldierToFile(std::vector<std::string> &, int,  std::ofstream&);

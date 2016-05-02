@@ -18,24 +18,9 @@ Officer::~Officer()
 }
 
 
-int Officer::ChoseSoldier()
+int Officer::ChoseSoldier(templateIO &fullName)
 {
-	std::ifstream chosenSoldier("Soldiers.txt");
-	if (!chosenSoldier.is_open())
-	{
-		return 2;
-	}
-	else
-	{
-		std::string pName;
-		std::cin >> pName;
-		std::string nameFromFile;
-		while (EOF)
-		{
-			chosenSoldier >> nameFromFile;
-			//if (nameFromFile == pName)
-		}
-	}
+	//return ReadFile(fullName);
 	return 0;
 }
 
@@ -45,8 +30,13 @@ int Officer::FireSoldier()
 	return 1;
 }
 
+int Officer::RemoveSoldier()
+{
+	return 0;
+}
 
-int Officer::AddSoldier(std::vector<std::string> &fullName)
+
+int Officer::AddSoldier(templateIO &fullName)
 {
 	return WriteFile(fullName);
 }

@@ -3,6 +3,7 @@
 #include "Soldier.h"
 #include "Officer.h"
 #include "OfficerHelper.h"
+#include "ProgrammerHelper.h"
 #include "DummySoldier.h"
 #include <iostream>
 #include <conio.h>
@@ -147,6 +148,31 @@ void Interface::ControlHelper()
 	return;
 }
 
+void Interface::ControlSearch()
+{
+	std::vector<char> neededParams;
+	neededParams.push_back('1');
+	int key;
+	do
+	{
+		cout << endl;
+		std::cout << "1 - " << GetLocStr(46) << std::endl;
+		std::cout << "2 - " << GetLocStr(47) << std::endl;
+		std::cout << "3 - " << GetLocStr(48) << std::endl;
+		std::cout << "4 - " << GetLocStr(49) << std::endl;
+		key = getch();
+		switch (key)
+		{
+		case '1':
+			if (neededParams[1])
+				break;
+			else
+				break;
+		}
+	} while (key != 27);
+	return;
+}
+
 
 void Interface::ControlOfficer()
 {
@@ -157,11 +183,12 @@ void Interface::ControlOfficer()
 		cout << endl;
 		std::cout << "1 - " << GetLocStr(1) << std::endl;
 		std::cout << "2 - " << GetLocStr(2) << std::endl;
-		std::cout << "3 - " << GetLocStr(3) << std::endl;
-		std::cout << "4 - " << GetLocStr(4) << std::endl;
-		std::cout << "5 - " << GetLocStr(5) << std::endl;
-		std::cout << "6 - " << GetLocStr(6) << std::endl;
-		std::cout << "7 - " << GetLocStr(7) << std::endl;
+		std::cout << "3 - " << GetLocStr(2) << std::endl;
+		std::cout << "4 - " << GetLocStr(3) << std::endl;
+		std::cout << "5 - " << GetLocStr(4) << std::endl;
+		std::cout << "6 - " << GetLocStr(5) << std::endl;
+		std::cout << "7 - " << GetLocStr(6) << std::endl;
+		std::cout << "8 - " << GetLocStr(7) << std::endl;
 		std::cout << "ESC - " << GetLocStr(8) << std::endl;
 		key = getch();
 		switch (key)
@@ -169,45 +196,59 @@ void Interface::ControlOfficer()
 		case '1':
 		{
 			system("cls");
+			templateIO sName;
 			std::string pName;
-			std::vector<std::string> myName;
-			std::cout << GetLocStr(39);
-			std::cin >> pName;
-			myName.push_back(pName);
-			std::cout << GetLocStr(40);
-			std::cin >> pName;
-			myName.push_back(pName);
-			std::cout << GetLocStr(41);
-			std::cin >> pName;
-			myName.push_back(pName);
-			General.AddSoldier(myName);
+			int sSkill;
+
+			for (int i = 0; i < 4; i++)
+			{
+				std::cout << GetLocStr(i+39);
+				AddToString(sName.myStringArr, pName);
+				CheckInput(sName.myStringArr[i]);
+			}
+
+			std::cout << GetLocStr(43);
+			std::cin.clear();
+			std::cin.ignore(cin.rdbuf()->in_avail());
+			std::cin >> sSkill;
+			CheckInput(sSkill);
+			sName.myIntArr.push_back(sSkill);
+
+			General.AddSoldier(sName);
 			break;
 		}
 		case '2':
+		{
 			system("cls");
-			General.FireSoldier();
+			ControlSearch();
 			break;
+		}
 		case '3':
+			system("cls");
+			//General.FireSoldier();
+			PrintAllElems("Soldiers.txt");
+			break;
+		case '4':
 			system("cls");
 			ControlHelper();
 			break;
-		case '4':
+		case '5':
 				 system("cls");
 			cout << GetLocStr(25) << endl;
 			General.SetDistance(&(General.chosenDistance));
 			break;
-		case '5':
+		case '6':
 			system("cls");
 			General.SetTarget();
 			break;
-		case '6':
+		case '7':
 		{
 			system("cls");
 			Soldier Private1;
 			ControlSoldier(Private1, General.chosenDistance);
 			break;
 		}
-		case '7':
+		case '8':
 		{
 			system("cls");
 			Localization::GetInstance().SwitchLang();
@@ -220,3 +261,42 @@ void Interface::ControlOfficer()
 }
 
 
+
+void Interface::CheckInput(int &x)
+{
+	bool isGood = std::ios::goodbit;
+	do {
+		try
+		{
+			CheckIfValues(x, isGood);
+		}
+		catch (const char* p)
+		{
+			std::cout << p << std::endl;
+			std::cin.clear();
+			std::cin.ignore(cin.rdbuf()->in_avail());
+			std::cout << GetLocStr(31) << std::endl;
+			std::cin >> x;
+			isGood = std::ios::goodbit;
+		}
+	} while (std::cin.rdstate() != std::ios::goodbit);
+}
+
+
+void Interface::CheckInput(std::string &arrElem)
+{
+	while (CheckIfValues(arrElem) == 1 || CheckIfValues(arrElem) == 2)
+	{
+		int i = CheckIfValues(arrElem);
+		cout << "\n" << GetLocStr(43 + i);
+		std::getline(std::cin, arrElem);
+	}
+}
+
+
+int Interface::AddToString(vector<std::string> & nameArr, std::string & pName)
+{
+	std::getline(std::cin, pName);
+	nameArr.push_back(pName);
+	return 0;
+}
