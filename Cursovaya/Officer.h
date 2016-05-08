@@ -1,7 +1,9 @@
 #pragma once
-#include <vector>
-#include <string>
-#include "ProgrammerHelper.h"
+
+#define DeletePrivate Officer::GetInstance().FireSoldier
+#define RemovePrivate Officer::GetInstance().RemoveSoldier
+#define AddPrivate Officer::GetInstance().AddSoldier
+#define ChosePrivate Officer::GetInstance().ChoseSoldier
 
 class Soldier;
 class Vehicle;
@@ -14,20 +16,21 @@ class Officer
 	friend class Interface;
 
 	int chosenDistance;
-	int AddSoldier(templateIO&);
-	int ChoseSoldier(templateIO&);
+
 	int FireSoldier();
 	int RemoveSoldier();
-
-
-	void WriteSoldierToFile(std::vector<std::string> &, int,  std::ofstream&);
-	void AskHelper();
-	void SetDistance(int*);
-	int GetDistance() { return chosenDistance; }
+	int AddSoldier() const;
+	Soldier ChoseSoldier(int & number);
 	DummySoldier SetTarget();
 
-public:
 	Officer();
-	~Officer();
+
 	// DummyVehicle SetTarget(Vehicle &);
+
+public:
+	int GetDistance() const { return chosenDistance; }
+	void SetDistance(int myDistance) { chosenDistance = myDistance; };
+
+	static Officer& GetInstance();
+	~Officer();
 };

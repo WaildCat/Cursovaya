@@ -1,15 +1,15 @@
 #include "Officer.h"
-#include "Soldier.h"
 #include "DummySoldier.h"
-#include "DummyVehicle.h"
-#include "ProgrammerHelper.h"
+#include "IOController.h"
 #include <iostream>
-#include <fstream>
-#include <vector>
+#include "Controller.h"
+#include "Soldier.h"
+#include "Gun.h"
 
 
 Officer::Officer()
 {
+	chosenDistance = 100;
 }
 
 
@@ -18,10 +18,10 @@ Officer::~Officer()
 }
 
 
-int Officer::ChoseSoldier(templateIO &fullName)
+Officer& Officer::GetInstance()
 {
-	//return ReadFile(fullName);
-	return 0;
+	static Officer instanceOfficer;
+	return instanceOfficer;
 }
 
 
@@ -30,41 +30,43 @@ int Officer::FireSoldier()
 	return 1;
 }
 
+
 int Officer::RemoveSoldier()
 {
 	return 0;
 }
 
 
-int Officer::AddSoldier(templateIO &fullName)
+int Officer::AddSoldier() const
 {
-	return WriteFile(fullName);
+	templateIO mySoldier = InputUnitFields("Soldier");
+	return WriteFile(mySoldier);
 }
 
 
-void Officer::WriteSoldierToFile(std::vector<std::string> &pFullName, int pSkill, std::ofstream &soldiers) // Нужно ли заново открывать файл в методе?
+Soldier Officer::ChoseSoldier(int & number)
 {
-	
+	templateIO sArr;
+	std::string fileName = "Soldiers.txt";
+	if (ChooseNeededElem(sArr, fileName, number) != -1)
+	{
+		Soldier neededSoldier(sArr.myStringArr[0], sArr.myStringArr[1], sArr.myStringArr[2], sArr.myStringArr[3], sArr.myIntArr[0]);
+		neededSoldier.MyGun = new Gun();
+		return neededSoldier;
+	}
+	else
+	{
+		Soldier standartSoldier;
+		return standartSoldier;
+	}
 }
 
-void Officer::AskHelper()
-{
-
-}
-
-
-void Officer::SetDistance(int *distanceToAim)
-{
-	int userDistance;
-	std::cin >> userDistance;
-	*distanceToAim = userDistance;
-}
 
 
 DummySoldier Officer::SetTarget()
 {
-	DummySoldier privateDummy;
-	return privateDummy;
+	DummySoldier humanDummy;
+	return humanDummy;
 }
 
 

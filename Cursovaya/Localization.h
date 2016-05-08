@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <array>
 
 #define GetLocStr Localization::GetInstance().GetString
@@ -10,12 +9,12 @@ using namespace std;
 class Localization //Singleton
 {
 	static const string PRIMARY_LANG, SECONDARY_LANG;
-	static const int STR_COUNT = 52;
+	static const int STR_COUNT = 50;
 	string curLang;
 	array <string, STR_COUNT> stringSet;
 	Localization();
 	Localization(const Localization&);
-	bool TryToLocalizate(string emergencyLang, int failedAttempts);
+	bool TryToLocalizate(string emergencyLang, int failedAttempts) const;
 public:
 	enum Strings
 	{

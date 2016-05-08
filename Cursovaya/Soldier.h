@@ -7,6 +7,7 @@ class OfficerHelper;
 class Soldier
 {
 	friend class Interface;
+	friend class Officer;
 	Gun *MyGun;
 	
 	int HumanSize;

@@ -1,11 +1,10 @@
 #include "Soldier.h"
 #include "OfficerHelper.h"
-#include "ProgrammerHelper.h"
 #include "Gun.h"
 #include <iostream>
 #include <fstream>
 #include <conio.h>
-#include <math.h>
+#include "IOController.h"
 
 Soldier::Soldier()
 {
@@ -24,6 +23,7 @@ Soldier::Soldier(std::string pName, std::string pSurname, std::string pNickname,
 	nickname = pNickname;
 	prefferedGun = pPrefferedGun;
 	ShootingSkill = pShootingSkill;
+	HumanSize = 1;
 	TakeWeapon(pPrefferedGun);
 	OfficerHelper::GetInstance().SetStatic(1, 1);
 }
@@ -43,36 +43,12 @@ int Soldier::TakeWeapon(std::string name)
 		return 1;
 	else
 	{
-		int weaponDamage, weaponAccuracy, weaponHolder, weaponRange, fl = 0;
-		std::string wNameFromFile;
-		wNameFromFile = name;
-
-		std::ifstream myWeapon("Weapons.txt");
-		if (!myWeapon.is_open())
+		templateIO myGun;
+		int succes = ReadFile(myGun, "Weapons.txt", 0);
+		
+		if (succes == 1)
 		{
-			return 2;
-		}
-		else
-			WriteFile(wNameFromFile);
-		{
-			while (!myWeapon.eof())
-			{
-				std::getline(myWeapon, wNameFromFile);
-				if (wNameFromFile == name) {
-					myWeapon >> weaponDamage;
-					myWeapon >> weaponAccuracy;
-					myWeapon >> weaponHolder;
-					myWeapon >> weaponRange;
-					fl = 1;
-					break;
-				}
-			}
-		}
-		myWeapon.close();
-
-		if (fl == 1)
-		{
-			MyGun = new Gun(weaponHolder, weaponRange, weaponDamage, weaponAccuracy, name);
+			MyGun = new Gun(myGun.myIntArr[0], myGun.myIntArr[1], myGun.myIntArr[2], myGun.myIntArr[3], name);
 			return 0;
 		}
 		else
@@ -101,7 +77,7 @@ int Soldier::SoldierDetails()
 {
 
 		std::string pName, pSurname, pNickname, sName;
-		int fl, numName;
+		int numName;
 
 		std::ifstream fullName("names.loc");
 		if (!fullName.is_open())

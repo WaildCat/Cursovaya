@@ -3,13 +3,13 @@
 #include "Soldier.h"
 #include "Officer.h"
 #include "OfficerHelper.h"
-#include "ProgrammerHelper.h"
 #include "DummySoldier.h"
 #include <iostream>
 #include <conio.h>
 #include <vector>
 #include <string>
- 
+#include "IOController.h"
+
 using namespace std;
 
 Interface::Interface()
@@ -158,16 +158,24 @@ void Interface::ControlSearch()
 		cout << endl;
 		std::cout << "1 - " << GetLocStr(46) << std::endl;
 		std::cout << "2 - " << GetLocStr(47) << std::endl;
-		std::cout << "3 - " << GetLocStr(48) << std::endl;
-		std::cout << "4 - " << GetLocStr(49) << std::endl;
 		key = getch();
 		switch (key)
 		{
 		case '1':
-			if (neededParams[1])
+			system("cls");
+			PrintAllElems("Soldiers.txt");
 				break;
-			else
-				break;
+		case '2':
+		{
+			system("cls");
+			int number;
+			GetLocStr(48);
+			cin >> number;
+			CheckIfCorrect(number);
+			Soldier mySoldier = ChosePrivate(number);
+		}
+			
+			
 		}
 	} while (key != 27);
 	return;
@@ -177,12 +185,13 @@ void Interface::ControlSearch()
 void Interface::ControlOfficer()
 {
 	Officer General;
+	Soldier Private1;
 	int key;
 	do
 	{
 		cout << endl;
 		std::cout << "1 - " << GetLocStr(1) << std::endl;
-		std::cout << "2 - " << GetLocStr(2) << std::endl;
+		std::cout << "2 - " << GetLocStr(48) << std::endl;
 		std::cout << "3 - " << GetLocStr(2) << std::endl;
 		std::cout << "4 - " << GetLocStr(3) << std::endl;
 		std::cout << "5 - " << GetLocStr(4) << std::endl;
@@ -196,25 +205,7 @@ void Interface::ControlOfficer()
 		case '1':
 		{
 			system("cls");
-			templateIO sName;
-			std::string pName;
-			int sSkill;
-
-			for (int i = 0; i < 4; i++)
-			{
-				std::cout << GetLocStr(i+39);
-				AddToString(sName.myStringArr, pName);
-				CheckInput(sName.myStringArr[i]);
-			}
-
-			std::cout << GetLocStr(43);
-			std::cin.clear();
-			std::cin.ignore(cin.rdbuf()->in_avail());
-			std::cin >> sSkill;
-			CheckInput(sSkill);
-			sName.myIntArr.push_back(sSkill);
-
-			General.AddSoldier(sName);
+			AddPrivate();
 			break;
 		}
 		case '2':
@@ -226,17 +217,21 @@ void Interface::ControlOfficer()
 		case '3':
 			system("cls");
 			//General.FireSoldier();
-			PrintAllElems("Soldiers.txt");
 			break;
 		case '4':
 			system("cls");
 			ControlHelper();
 			break;
 		case '5':
-				 system("cls");
+		{
+			system("cls");
 			cout << GetLocStr(25) << endl;
-			General.SetDistance(&(General.chosenDistance));
+			int changedDistance;
+			cin >> changedDistance;
+			CheckIfCorrect(changedDistance);
+			General.SetDistance(changedDistance);
 			break;
+		}
 		case '6':
 			system("cls");
 			General.SetTarget();
@@ -244,7 +239,6 @@ void Interface::ControlOfficer()
 		case '7':
 		{
 			system("cls");
-			Soldier Private1;
 			ControlSoldier(Private1, General.chosenDistance);
 			break;
 		}
@@ -258,39 +252,6 @@ void Interface::ControlOfficer()
 		std::cout << std::endl;
 	} while (key != 27);
 	return;
-}
-
-
-
-void Interface::CheckInput(int &x)
-{
-	bool isGood = std::ios::goodbit;
-	do {
-		try
-		{
-			CheckIfValues(x, isGood);
-		}
-		catch (const char* p)
-		{
-			std::cout << p << std::endl;
-			std::cin.clear();
-			std::cin.ignore(cin.rdbuf()->in_avail());
-			std::cout << GetLocStr(31) << std::endl;
-			std::cin >> x;
-			isGood = std::ios::goodbit;
-		}
-	} while (std::cin.rdstate() != std::ios::goodbit);
-}
-
-
-void Interface::CheckInput(std::string &arrElem)
-{
-	while (CheckIfValues(arrElem) == 1 || CheckIfValues(arrElem) == 2)
-	{
-		int i = CheckIfValues(arrElem);
-		cout << "\n" << GetLocStr(43 + i);
-		std::getline(std::cin, arrElem);
-	}
 }
 
 

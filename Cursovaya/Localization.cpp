@@ -1,5 +1,6 @@
 #include "Localization.h"
 #include <fstream>
+#include <string>
 
 const string Localization::PRIMARY_LANG = "rus", Localization::SECONDARY_LANG = "eng";
 
@@ -15,7 +16,7 @@ Localization& Localization::GetInstance()
 	return instance;
 }
 
-bool Localization::TryToLocalizate(string emergencyLang, int failedAttempts)
+bool Localization::TryToLocalizate(string emergencyLang, int failedAttempts) const
 {
 	string targetLang;
 	if (failedAttempts == 0)

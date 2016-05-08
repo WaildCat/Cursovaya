@@ -1,6 +1,5 @@
 #include "OfficerHelper.h"
 #include "Localization.h"
-#include "string"
 
 int OfficerHelper::soldiers = 0, OfficerHelper::weapons = 0, OfficerHelper::vehicles = 0;
 

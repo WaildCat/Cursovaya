@@ -1,6 +1,5 @@
 #include "Interface.h"
 #include "Localization.h"
-#include <stdio.h>
 #include <locale.h>
 #include <ctime>
 #include <cstdlib>

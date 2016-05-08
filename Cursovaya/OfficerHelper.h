@@ -8,11 +8,12 @@ class OfficerHelper  //Singleton
 	static int soldiers;
 	static int weapons;
 	static int vehicles;
+
+	OfficerHelper();
 public:
 	void SetStatic(int, int);
 	static OfficerHelper& GetInstance();
 	static int GetNumber(int);
 	std::string GetInfo(int);
-	OfficerHelper();
 	~OfficerHelper();
 };
