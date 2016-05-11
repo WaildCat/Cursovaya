@@ -5,7 +5,8 @@
 #include "string"
 #include "Controller.h"
 #include "Localization.h"
-
+#include "ErrorsCatcher.h"
+#include "Soldier.h"
 
 
 IOController& IOController::GetInstance()
@@ -15,9 +16,9 @@ IOController& IOController::GetInstance()
 }
 
 
-int IOController::WriteToFile(templateIO& myStruct) const
+int IOController::WriteToFile(templateIO& myStruct, std::string fileName) const
 {
-	std::ofstream toFile("Soldiers.txt", std::ios_base::app);
+	std::ofstream toFile(fileName, std::ios_base::app);
 	if (!toFile.is_open())
 	{
 		return 2;
@@ -35,7 +36,7 @@ int IOController::WriteToFile(templateIO& myStruct) const
 			toFile << myStruct.myIntArr[i] << " ";
 		}
 
-		int count = GetAllElemCount("Soldiers.txt");
+		int count = GetAllElemCount(fileName);
 		if (count != -1)
 			toFile << count + 1;
 		
@@ -45,7 +46,7 @@ int IOController::WriteToFile(templateIO& myStruct) const
 }
 
 
-int IOController::ReadFromFile(templateIO& myStruct, std::string fileName, int number)
+int IOController::ReadFromFile(templateIO& myStruct, std::string fileName, std::string unit, int number)
 {
 	std::ifstream fromFile(fileName);
 
@@ -54,84 +55,107 @@ int IOController::ReadFromFile(templateIO& myStruct, std::string fileName, int n
 		return 2;
 	}
 
-	else
+	string stringFromFile, neededNumber = " ";
+	neededNumber += ((number - 1) + 0x30);
+	int digit, numOfString, numOfInt;
+
+	while (!fromFile.eof())
 	{
-		string stringFromFile, neededNumber = " ";
-		neededNumber += ((number - 1) + 0x30);
-		int digit;
-		while (!fromFile.eof())
+		size_t pos = stringFromFile.find(neededNumber);
+
+		if (number > 1)
 		{
 			getline(fromFile, stringFromFile);
-
-			size_t pos;
-
-			if (!myStruct.myStringArr[0])
-				size_t pos = stringFromFile.find(neededNumber);
-			else
-				size_t pos = stringFromFile.find(myStruct.myStringArr[0] + " ");
-
-			if (pos != std::string::npos || (pos != std::string::npos && number == 1))
+			try // If myStringArr[0] exists
 			{
-					for (int i = 0; i < 4/*myStruct.myStringArr.size()*/; i++)
-					{
-						fromFile >> stringFromFile;
-						myStruct.myStringArr.push_back(stringFromFile);
-					}
-					for (int i = 0; i < 1/*myStruct.myIntArr.size()*/; i++)
-					{
-						try
-						{
-							fromFile >> digit;
-							if (digit < 1 || digit > 99)
-								throw "Corrupted data in the file";
-							myStruct.myIntArr.push_back(digit);
-						}
-						catch (char* error)
-						{
-							cout << error << ". " << GetLocStr(40);
-							int mySkill;
-							cin >> mySkill;
-							CheckInput(mySkill);
-							myStruct.myIntArr.push_back(mySkill);
-						}
-					}
-					break;
+				if (myStruct.myStringArr.size() != 0)
+					size_t pos = stringFromFile.find(myStruct.myStringArr[0] + " ");
+				else
+					throw ErrorsCatcher();
+			}
+			catch (ErrorsCatcher &foundError)
+			{
+				foundError.OutOfBounds();
+			}
+		}
+
+		try // If GetFieldsCount[0] and GetFieldsCount[1] exists
+		{
+			numOfString = GetFieldsCount(unit)[0]; // Исправить на универсальную
+			numOfInt = GetFieldsCount(unit)[1];
+			if (numOfString == 0 || numOfInt == 0)
+				throw ErrorsCatcher();
+		}
+		catch(ErrorsCatcher &foundError)
+		{
+			foundError.OutOfBounds();
+			//return 3;
+		}
+
+		if (pos != std::string::npos || number == 1)
+		{
+			try
+			{
+				for (int i = 0; i < numOfString; i++)
+				{
+					fromFile >> stringFromFile;
+					myStruct.myStringArr.push_back(stringFromFile);
+				}
+				for (int i = 0; i < numOfInt; i++)
+				{
+					fromFile >> digit;
+					myStruct.myIntArr.push_back(digit);
+					if (digit > 2000 || digit < 0)
+						throw ErrorsCatcher();
+				}
+				break;
+			}
+			catch(ErrorsCatcher& foundError)
+			{
+				foundError.CorruptedFileData();
+				cout << "Please, try again\n";
+				fromFile.close();
+				return 1;
 			}
 		}
 	}
+
 	fromFile.close();
 	return 0;
 }
 
 
 
-int IOController::DeleteFromFile(int number, string fileName)
+int IOController::DeleteFromFile(int number, string filename)
 {
+	std::vector<std::string> vec;
+	std::ifstream file(filename);
+	if (file.is_open())
 	{
-		std::ifstream fromFile(fileName);
-
-		if (!fromFile.is_open())
-		{
-			return 2;
-		}
-
-		else
-		{
-			string stringFromFile, neededNumber = " ";
-			neededNumber += ((number - 1) + 0x30);
-			while (!fromFile.eof())
+		std::string str;
+		while (std::getline(file, str))
+			if (str != "")
 			{
-				getline(fromFile, stringFromFile);
-				size_t pos = stringFromFile.find(neededNumber);
-				if (pos != std::string::npos || (pos != std::string::npos && number == 1))
-				{
-					//Удалить строку
-				}
-				break;
+				int ls = str[str.size() - 1] - 0x30;
+				if ((str[str.size() - 1] - 0x30) > number)
+					str[str.size() - 1] = (str[str.size() - 1] - 0x30 - 1) + 0x30;
+				vec.push_back(str);
 			}
-			return 1;
+		file.close();
+		if (vec.size() < number)
+			return false;
+		vec.erase(vec.begin() + number - 1);
+		std::ofstream outfile(filename);
+		if (outfile.is_open())
+		{
+			std::copy(vec.begin(), vec.end(),
+				std::ostream_iterator<std::string>(outfile, "\n"));
+			outfile.close();
+			return true;
 		}
+		return false;
 	}
+	return false;
 }
 
 
@@ -214,6 +238,7 @@ int IOController::GetAllElemCount(std::string fileName) const
 	return count;
 }
 
+
 templateIO IOController::InputUnitParams(std::string typeOfUnit)
 {
 	templateIO myUnit;
@@ -239,6 +264,7 @@ templateIO IOController::InputUnitParams(std::string typeOfUnit)
 	for (int i = 0; i < numberOfString; i++)
 	{
 		std::cin >> stringFields;
+		CheckInput(stringFields);
 		myUnit.myStringArr.push_back(stringFields);
 	}
 	for (int i = 0; i < numberOfInt; i++)
@@ -261,6 +287,23 @@ IOController::~IOController()
 }
 
 
+std::ostream& operator<<(std::ostream& os, const Soldier& Private)
+{
+	cout << GetLocStr(53) << Private.getName() << endl;
+	cout << GetLocStr(54) << Private.getSurname() << endl;
+	cout << GetLocStr(55) << Private.getNickname() << endl;
+	cout << GetLocStr(57) << Private.getSkill() << endl;
+	return os;
+}
+
+
+template <typename T>
+void IOController::PrintMyInfo(T& unit)
+{
+	cout << unit;
+}
+
+
 bool operator!( std::string & i)
 {
 	try
@@ -278,34 +321,32 @@ bool operator!( std::string & i)
 
 void IOController::CheckInput(int &x)
 {
-	bool isGood = std::cin.rdstate();
-	if (!cin)
+	bool isGood;
+	try
 	{
-		do {
-			try
-			{
-				CheckIfValues(x, isGood);
-			}
-			catch (const char* p)
-			{
-				std::cout << p << std::endl;
-				std::cin.clear();
-				std::cin.ignore(std::cin.rdbuf()->in_avail());
-				std::cout << GetLocStr(31) << std::endl;
-				std::cin >> x;
-				isGood = std::cin.rdstate();
-			}
-		} while /*(std::cin.rdstate() != std::ios::goodbit)*/ (!std::ios::goodbit);
+		isGood = cin.fail();
+		if (isGood)
+			throw ErrorsCatcher();
+	}
+	catch (ErrorsCatcher &foundError)
+	{
+		foundError.ErrorInInput(x);
 	}
 }
 
 
+
 void IOController::CheckInput(std::string &arrElem)
 {
-	while (CheckIfValues(arrElem) == 1 || CheckIfValues(arrElem) == 2)
+	int succes;
+	try
 	{
-		int i = CheckIfValues(arrElem);
-		cout << "\n" << GetLocStr(43 + i);
-		std::getline(std::cin, arrElem);
+		succes = CheckIfValues(arrElem);
+		if (succes == 1 || succes == 2)
+			throw ErrorsCatcher();
+	}
+	catch(ErrorsCatcher &foundError)
+	{
+		foundError.ErrorInInput(arrElem, succes);
 	}
 }

@@ -142,11 +142,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Artilery.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="CrewMember.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="DummySoldier.h" />
     <ClInclude Include="DummyVehicle.h" />
+    <ClInclude Include="ErrorsCatcher.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="Localization.h" />
     <ClInclude Include="Officer.h" />
@@ -154,15 +155,18 @@
     <ClInclude Include="IOController.h" />
     <ClInclude Include="Soldier.h" />
     <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="VehicleCrew.h" />
+    <ClInclude Include="VehicleGun.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Gun.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Artilery.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="CrewMember.cpp" />
     <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="DummySoldier.cpp" />
     <ClCompile Include="DummyVehicle.cpp" />
+    <ClCompile Include="ErrorsCatcher.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Localization.cpp" />
     <ClCompile Include="main.cpp" />
@@ -171,6 +175,8 @@
     <ClCompile Include="IOController.cpp" />
     <ClCompile Include="Soldier.cpp" />
     <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="VehicleCrew.cpp" />
+    <ClCompile Include="VehicleGun.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Gun.cpp" />
   </ItemGroup>

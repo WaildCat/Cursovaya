@@ -4,6 +4,7 @@
 #define RemovePrivate Officer::GetInstance().RemoveSoldier
 #define AddPrivate Officer::GetInstance().AddSoldier
 #define ChosePrivate Officer::GetInstance().ChoseSoldier
+#include <string>
 
 class Soldier;
 class Vehicle;
@@ -20,7 +21,8 @@ class Officer
 	int FireSoldier();
 	int RemoveSoldier();
 	int AddSoldier() const;
-	Soldier ChoseSoldier(int & number);
+
+
 	DummySoldier SetTarget();
 
 	Officer();

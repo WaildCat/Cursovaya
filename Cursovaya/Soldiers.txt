@@ -1,6 +1,5 @@
-Rayman Jackson Greed AK-47  57 1
-Vitaliy Klichko Dictor Head 99 2
-Semen Boyarskiy Russian TopGun 99 3
-
-Ruslan tj,y" Shmel Deagle 80 4
-Artem Pilipenko TaDavai AK-47 1 5
+Kuslan Pilipenko TaDavai 1 1
+Artemiy Pilipenko TaDavai 1 2
+Semen Pilipenko TaDavai 1 3
+Anton Pilipenko TaDavai 1 4
+vlad Pilipenko TaDavai 1 5

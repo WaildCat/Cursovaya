@@ -9,7 +9,7 @@ using namespace std;
 class Localization //Singleton
 {
 	static const string PRIMARY_LANG, SECONDARY_LANG;
-	static const int STR_COUNT = 50;
+	static const int STR_COUNT = 63;
 	string curLang;
 	array <string, STR_COUNT> stringSet;
 	Localization();

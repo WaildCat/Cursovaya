@@ -1,6 +1,10 @@
 #pragma once
-class DummyVehicle
+#include "Dummy.h"
+#include "Vehicle.h"
+class DummyVehicle:
+	public Dummy, public Vehicle
 {
+
 	void SetParam();
 public:
 	DummyVehicle();

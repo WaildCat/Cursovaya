@@ -9,8 +9,12 @@
 #include <vector>
 #include <string>
 #include "IOController.h"
+#include "Controller.h"
+#include "Vehicle.h"
 
 using namespace std;
+
+void InputDigit(int&);
 
 Interface::Interface()
 {
@@ -49,11 +53,7 @@ void Interface::ControlSoldier(Soldier &Private, int distance)
 			}
 			else
 			{
-				string wName;
-				cout << "\n" << GetLocStr(14) << "\n";
-				cin >> wName;
-
-				succes = Private.TakeWeapon(wName);
+				ControlSearch(Private.MyGun, "Weapons.txt");
 
 				if (succes == 2)
 					cout << "\n" << GetLocStr(15) << "\n";
@@ -116,6 +116,7 @@ void Interface::ControlSoldier(Soldier &Private, int distance)
 	return;
 }
 
+
 void Interface::ControlHelper()
 {
 	int key;
@@ -148,10 +149,10 @@ void Interface::ControlHelper()
 	return;
 }
 
-void Interface::ControlSearch()
+
+template <typename T>
+void Interface::ControlSearch(T& myUnit, string fileName)
 {
-	std::vector<char> neededParams;
-	neededParams.push_back('1');
 	int key;
 	do
 	{
@@ -163,28 +164,74 @@ void Interface::ControlSearch()
 		{
 		case '1':
 			system("cls");
-			PrintAllElems("Soldiers.txt");
-				break;
+			PrintAllElems(fileName);
+			break;
 		case '2':
 		{
 			system("cls");
-			int number;
+			int number, succes;
 			GetLocStr(48);
 			cin >> number;
-			CheckIfCorrect(number);
-			Soldier mySoldier = ChosePrivate(number);
+			do
+			{
+				CheckIfCorrect(number);
+				succes = CheckIfValues(number, 1, GetElemCount(fileName));
+				if (succes == 1)
+				{
+					cout << GetLocStr(49) << 1 << GetLocStr(50) << GetElemCount(fileName) << endl;
+					InputDigit(number);
+				}
+			} while (succes != 0);
+			T backupUnit = myUnit;
+			if (ChooseMyUnit(number, myUnit))
+				cout << "Успешно";
+			else
+				cout << "При замене ошибка";
 		}
-			
-			
 		}
 	} while (key != 27);
 	return;
 }
 
 
-void Interface::ControlOfficer()
+void Interface::ChoseMenu()
 {
 	Officer General;
+	int key;
+	do
+	{
+		std::cout << endl;
+		std::cout << "1 - " << GetLocStr(59) << std::endl;
+		std::cout << "2 - " << GetLocStr(60) << std::endl;
+		std::cout << "3 - " << GetLocStr(61) << std::endl;
+		std::cout << "4 - " << GetLocStr(7) << std::endl;
+		std::cout << "ESC - " << GetLocStr(8) << std::endl;
+		key = getch();
+		switch (key)
+		{
+		case '1':
+			system("cls");
+			ControlOfficerS(General);
+			break;
+		case '2':
+			system("cls");
+			ControlOfficerV(General);
+			break;
+		case '3':
+			system("cls");
+			ControlOfficerA(General);
+			break;
+		case '4':
+			system("cls");
+			Localization::GetInstance().SwitchLang();
+			break;
+		}
+	} while (key != 27);
+}
+
+
+void Interface::ControlOfficerS(Officer& General)
+{
 	Soldier Private1;
 	int key;
 	do
@@ -192,7 +239,110 @@ void Interface::ControlOfficer()
 		cout << endl;
 		std::cout << "1 - " << GetLocStr(1) << std::endl;
 		std::cout << "2 - " << GetLocStr(48) << std::endl;
-		std::cout << "3 - " << GetLocStr(2) << std::endl;
+		std::cout << "3 - " << GetLocStr(58) << std::endl;
+		std::cout << "4 - " << GetLocStr(62) << std::endl;
+		std::cout << "5 - " << GetLocStr(3) << std::endl;
+		std::cout << "6 - " << GetLocStr(4) << std::endl;
+		std::cout << "7 - " << GetLocStr(5) << std::endl;
+		std::cout << "8 - " << GetLocStr(6) << std::endl;
+		std::cout << "9 - " << GetLocStr(7) << std::endl;
+		std::cout << "ESC - " << GetLocStr(8) << std::endl;
+		key = getch();
+		switch (key)
+		{
+		case '1':
+		{
+			system("cls");
+			AddPrivate();
+			int number = 1;
+			ChooseMyUnit(number, Private1);
+			break;
+		}
+		case '2':
+		{
+			system("cls");
+			ControlSearch(Private1, "Soldiers.txt");
+			break;
+		}
+		case '3':
+			system("cls");
+			cout << Private1;
+			break;
+		case '4':
+			system("cls");
+			int number, succes;
+			cin >> number;
+
+			do
+			{
+				CheckIfCorrect(number);
+				succes = CheckIfValues(number, 1, GetElemCount("Soldiers.txt"));
+				if (succes == 1)
+				{
+					cout << GetLocStr(49) << 1 << GetLocStr(50) << GetElemCount("Soldiers.txt") << endl;
+					InputDigit(number);
+				}
+			} while (succes != 0);
+			DeleteFFile(number, "Soldiers.txt");
+			break;
+		case '5':
+			system("cls");
+			ControlHelper();
+			break;
+		case '6':
+		{
+			system("cls");
+			cout << GetLocStr(25) << endl;
+			int changedDistance, succes;
+			cin >> changedDistance;
+
+			do
+			{
+				CheckIfCorrect(changedDistance);
+				succes = CheckIfValues(changedDistance, 1, 2000);
+				if (succes == 1)
+				{
+					cout << GetLocStr(49) << 1 << GetLocStr(50) << 2000 << endl;
+					InputDigit(changedDistance);
+				}
+			} while (succes != 0);
+
+			General.SetDistance(changedDistance);
+			break;
+		}
+		case '7':
+			system("cls");
+			General.SetTarget();
+			break;
+		case '8':
+		{
+			system("cls");
+			ControlSoldier(Private1, General.chosenDistance);
+			break;
+		}
+		case '9':
+		{
+			system("cls");
+			Localization::GetInstance().SwitchLang();
+			break;
+		}
+		}
+		std::cout << std::endl;
+	} while (key != 27);
+	return;
+}
+
+
+void Interface::ControlOfficerV(Officer& General)
+{
+	Vehicle myVehicle;
+	int key;
+	do
+	{
+		cout << endl;
+		std::cout << "1 - " << GetLocStr(1) << std::endl;
+		std::cout << "2 - " << GetLocStr(48) << std::endl;
+		std::cout << "3 - " << GetLocStr(58) << std::endl;
 		std::cout << "4 - " << GetLocStr(3) << std::endl;
 		std::cout << "5 - " << GetLocStr(4) << std::endl;
 		std::cout << "6 - " << GetLocStr(5) << std::endl;
@@ -211,12 +361,12 @@ void Interface::ControlOfficer()
 		case '2':
 		{
 			system("cls");
-			ControlSearch();
+		//	ControlSearch(Private1);
 			break;
 		}
 		case '3':
 			system("cls");
-			//General.FireSoldier();
+			//cout << Private1;
 			break;
 		case '4':
 			system("cls");
@@ -226,9 +376,20 @@ void Interface::ControlOfficer()
 		{
 			system("cls");
 			cout << GetLocStr(25) << endl;
-			int changedDistance;
+			int changedDistance, succes;
 			cin >> changedDistance;
-			CheckIfCorrect(changedDistance);
+
+			do
+			{
+				CheckIfCorrect(changedDistance);
+				succes = CheckIfValues(changedDistance, 1, 2000);
+				if (succes == 1)
+				{
+					cout << GetLocStr(49) << 1 << GetLocStr(50) << 2000 << endl;
+					InputDigit(changedDistance);
+				}
+			} while (succes != 0);
+
 			General.SetDistance(changedDistance);
 			break;
 		}
@@ -239,7 +400,89 @@ void Interface::ControlOfficer()
 		case '7':
 		{
 			system("cls");
-			ControlSoldier(Private1, General.chosenDistance);
+		//	ControlSoldier(Private1, General.chosenDistance);
+			break;
+		}
+		case '8':
+		{
+			system("cls");
+			Localization::GetInstance().SwitchLang();
+			break;
+		}
+		}
+		std::cout << std::endl;
+	} while (key != 27);
+	return;
+}
+
+
+void Interface::ControlOfficerA(Officer& General)
+{
+	int key;
+	do
+	{
+		cout << endl;
+		std::cout << "1 - " << GetLocStr(1) << std::endl;
+		std::cout << "2 - " << GetLocStr(48) << std::endl;
+		std::cout << "3 - " << GetLocStr(58) << std::endl;
+		std::cout << "4 - " << GetLocStr(3) << std::endl;
+		std::cout << "5 - " << GetLocStr(4) << std::endl;
+		std::cout << "6 - " << GetLocStr(5) << std::endl;
+		std::cout << "7 - " << GetLocStr(6) << std::endl;
+		std::cout << "8 - " << GetLocStr(7) << std::endl;
+		std::cout << "ESC - " << GetLocStr(8) << std::endl;
+		key = getch();
+		switch (key)
+		{
+		case '1':
+		{
+			system("cls");
+			AddPrivate();
+			break;
+		}
+		case '2':
+		{
+			system("cls");
+			//ControlSearch(Private1);
+			break;
+		}
+		case '3':
+			system("cls");
+			//cout << Private1;
+			break;
+		case '4':
+			system("cls");
+			ControlHelper();
+			break;
+		case '5':
+		{
+			system("cls");
+			cout << GetLocStr(25) << endl;
+			int changedDistance, succes;
+			cin >> changedDistance;
+
+			do
+			{
+				CheckIfCorrect(changedDistance);
+				succes = CheckIfValues(changedDistance, 1, 2000);
+				if (succes == 1)
+				{
+					cout << GetLocStr(49) << 1 << GetLocStr(50) << 2000 << endl;
+					InputDigit(changedDistance);
+				}
+			} while (succes != 0);
+
+			General.SetDistance(changedDistance);
+			break;
+		}
+		case '6':
+			system("cls");
+			General.SetTarget();
+			break;
+		case '7':
+		{
+			system("cls");
+		//	ControlSoldier(Private1, General.chosenDistance);
 			break;
 		}
 		case '8':
@@ -260,4 +503,12 @@ int Interface::AddToString(vector<std::string> & nameArr, std::string & pName)
 	std::getline(std::cin, pName);
 	nameArr.push_back(pName);
 	return 0;
+}
+
+
+void InputDigit(int& digit)
+{
+	cin.clear();
+	cin.ignore(cin.rdbuf()->in_avail());
+	cin >> digit;
 }

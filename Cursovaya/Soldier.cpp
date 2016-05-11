@@ -16,15 +16,14 @@ Soldier::Soldier()
 	OfficerHelper::GetInstance().SetStatic(1, 1);
 }
 
-Soldier::Soldier(std::string pName, std::string pSurname, std::string pNickname, std::string pPrefferedGun, int pShootingSkill)
+Soldier::Soldier(std::string pName, std::string pSurname, std::string pNickname, int pShootingSkill)
 {
 	name = pName;
 	surname = pSurname;
 	nickname = pNickname;
-	prefferedGun = pPrefferedGun;
 	ShootingSkill = pShootingSkill;
 	HumanSize = 1;
-	TakeWeapon(pPrefferedGun);
+	MyGun = new Gun;
 	OfficerHelper::GetInstance().SetStatic(1, 1);
 }
 
@@ -37,14 +36,14 @@ Soldier::~Soldier()
 }
 
 
-int Soldier::TakeWeapon(std::string name)
+int Soldier::TakeWeapon(std::string name, int number)
 {
 	if (MyGun)
 		return 1;
 	else
 	{
 		templateIO myGun;
-		int succes = ReadFile(myGun, "Weapons.txt", 0);
+		int succes = ReadFile(myGun, "Weapons.txt", "Gun", number);
 		
 		if (succes == 1)
 		{
@@ -53,8 +52,7 @@ int Soldier::TakeWeapon(std::string name)
 		}
 		else
 		{
-			MyGun = new Gun();
-			return 3;
+			return 2;
 		}
 	}
 }

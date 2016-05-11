@@ -7,27 +7,32 @@ class OfficerHelper;
 class Soldier
 {
 	friend class Interface;
-	friend class Officer;
+//	friend class Officer;
 	Gun *MyGun;
 	
+	std::string prefferedGun;
+
+	int TakeWeapon(std::string, int);
+	int DropWeapon();
+
+protected:
 	int HumanSize;
 	int ShootingSkill;
-
 	std::string name;
 	std::string surname;
 	std::string nickname;
-	std::string prefferedGun;
 
 	int Shoot(int);
 	int ReloadWeapon();
-	int TakeWeapon(std::string);
-	int DropWeapon();
 	int SoldierDetails();
-
 public:
 	int getMyGunHolder();
+	int getSkill() const { return ShootingSkill; }
+	std::string getName() const { return name; }
+	std::string getSurname() const { return surname; }
+	std::string getNickname() const { return nickname; }
+	std::string getPrefferedGun() const { return prefferedGun; }
 	Soldier();
-	Soldier(std::string, std::string, std::string, std::string, int);
+	Soldier(std::string, std::string, std::string, int);
 	~Soldier();
-
 };

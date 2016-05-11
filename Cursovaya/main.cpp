@@ -3,6 +3,7 @@
 #include <locale.h>
 #include <ctime>
 #include <cstdlib>
+#include "Officer.h"
 
 int main()
 {
@@ -10,6 +11,7 @@ int main()
 	srand(time(NULL));
 	Interface myInterface;
 	Localization::GetInstance().InitLocalization();
-	myInterface.ControlOfficer();
+//	Officer General;
+	myInterface.ChoseMenu();
 	return 0;
 }
