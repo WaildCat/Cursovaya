@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="CrewCommander.h" />
     <ClInclude Include="CrewMember.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="DummySoldier.h" />
@@ -162,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="CrewCommander.cpp" />
     <ClCompile Include="CrewMember.cpp" />
     <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="DummySoldier.cpp" />

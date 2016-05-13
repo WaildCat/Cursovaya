@@ -41,6 +41,13 @@ int Officer::AddSoldier() const
 }
 
 
+int Officer::AddCrewMember() const
+{
+	templateIO CrewMember = InputUnitFields("CrewMember");
+	return WriteFile(CrewMember, "CrewMembers.txt");
+}
+
+
 DummySoldier Officer::SetTarget()
 {
 	DummySoldier humanDummy;

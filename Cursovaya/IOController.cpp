@@ -7,6 +7,7 @@
 #include "Localization.h"
 #include "ErrorsCatcher.h"
 #include "Soldier.h"
+#include "Gun.h"
 
 
 IOController& IOController::GetInstance()
@@ -38,7 +39,7 @@ int IOController::WriteToFile(templateIO& myStruct, std::string fileName) const
 
 		int count = GetAllElemCount(fileName);
 		if (count != -1)
-			toFile << count + 1;
+			toFile << count + 1 << " ";
 		
 		toFile.close();
 		return 0;
@@ -57,6 +58,7 @@ int IOController::ReadFromFile(templateIO& myStruct, std::string fileName, std::
 
 	string stringFromFile, neededNumber = " ";
 	neededNumber += ((number - 1) + 0x30);
+	neededNumber += " ";
 	int digit, numOfString, numOfInt;
 
 	while (!fromFile.eof())
@@ -66,6 +68,7 @@ int IOController::ReadFromFile(templateIO& myStruct, std::string fileName, std::
 		if (number > 1)
 		{
 			getline(fromFile, stringFromFile);
+			pos = stringFromFile.find(neededNumber);
 			try // If myStringArr[0] exists
 			{
 				if (myStruct.myStringArr.size() != 0)
@@ -136,7 +139,6 @@ int IOController::DeleteFromFile(int number, string filename)
 		while (std::getline(file, str))
 			if (str != "")
 			{
-				int ls = str[str.size() - 1] - 0x30;
 				if ((str[str.size() - 1] - 0x30) > number)
 					str[str.size() - 1] = (str[str.size() - 1] - 0x30 - 1) + 0x30;
 				vec.push_back(str);
@@ -247,13 +249,18 @@ templateIO IOController::InputUnitParams(std::string typeOfUnit)
 
 	if (typeOfUnit == "Soldier")
 	{
-		numberOfString = 4;
+		numberOfString = 3;
 		numberOfInt = 1;
 	}
 	else if (typeOfUnit == "Weapon")
 	{
 		numberOfString = 1;
 		numberOfInt = 4;
+	}
+	else if (typeOfUnit == "CrewMember")
+	{
+		numberOfString = 3;
+		numberOfInt = 3;
 	}
 	else
 	{
@@ -287,35 +294,89 @@ IOController::~IOController()
 }
 
 
-std::ostream& operator<<(std::ostream& os, const Soldier& Private)
+std::ostream& operator<<(std::ostream& os, const Soldier& Unit)
 {
-	cout << GetLocStr(53) << Private.getName() << endl;
-	cout << GetLocStr(54) << Private.getSurname() << endl;
-	cout << GetLocStr(55) << Private.getNickname() << endl;
-	cout << GetLocStr(57) << Private.getSkill() << endl;
+	cout << GetLocStr(53) << Unit.getName() << endl;
+	cout << GetLocStr(54) << Unit.getSurname() << endl;
+	cout << GetLocStr(55) << Unit.getNickname() << endl;
+	cout << GetLocStr(57) << Unit.getSkill() << endl;
+	//cout << endl << Unit.MyGun;
 	return os;
 }
+
+std::ostream& operator<<(std::ostream& os, const CrewMember& Unit)
+{
+	cout << GetLocStr(53) << Unit.getName() << endl;
+	cout << GetLocStr(54) << Unit.getSurname() << endl;
+	cout << GetLocStr(55) << Unit.getNickname() << endl;
+	cout << GetLocStr(57) << Unit.GetAimingSkill() << endl;
+	cout << GetLocStr(57) << Unit.GetReloadSkill() << endl;
+	cout << GetLocStr(57) << Unit.GetShootingSkill() << endl;
+	return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const VehicleCrew& Unit)
+{
+	cout << Unit.Aimer << endl;
+	cout << Unit.Shooter << endl;
+	cout << Unit.Loader << endl;
+	return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Vehicle& Unit)
+{
+	cout << GetLocStr(81) << Unit.GetName() << endl;
+	cout << GetLocStr(82) << Unit.GetArmor("MiddleCenter", 0) << " " << GetLocStr(83) << Unit.GetArmor("MiddleTop", 0) << endl;
+	cout << GetLocStr(84) << Unit.GetArmor("MiddleCenter", 90) << " " << GetLocStr(85) << Unit.GetArmor("MiddleTop", 90) << endl;
+	cout << GetLocStr(86) << Unit.GetArmor("MiddleCenter", 180) << " " << GetLocStr(87) << Unit.GetArmor("MiddleTop", 180) << endl;
+	cout << GetLocStr(88) << Unit.GetBDurability() << " " << GetLocStr(89) << Unit.GetEDurability() << endl;
+	cout << GetLocStr(90) << Unit.GetTMDurability() << " " << GetLocStr(91) << Unit.GetADurability() << endl;
+	cout << GetLocStr(92) << Unit.GetTDurability() << endl;
+	cout << Unit.MyGun;
+	return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const DummyVehicle& Unit)
+{
+	cout << GetLocStr(81) << Unit.GetName() << endl;
+	cout << GetLocStr(82) << Unit.GetArmor("MiddleCenter", 0) << " " << GetLocStr(83) << Unit.GetArmor("MiddleTop", 0) << endl;
+	cout << GetLocStr(84) << Unit.GetArmor("MiddleCenter", 90) << " " << GetLocStr(85) << Unit.GetArmor("MiddleTop", 90) << endl;
+	cout << GetLocStr(86) << Unit.GetArmor("MiddleCenter", 180) << " " << GetLocStr(87) << Unit.GetArmor("MiddleTop", 180) << endl;
+	cout << GetLocStr(88) << Unit.GetBDurability() << " " << GetLocStr(89) << Unit.GetEDurability() << endl;
+	cout << GetLocStr(90) << Unit.GetTMDurability() << " " << GetLocStr(91) << Unit.GetADurability() << endl;
+	cout << GetLocStr(92) << Unit.GetTDurability() << endl;
+	return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, Gun* Unit)
+{
+	cout << GetLocStr(95) << Unit->GetName() << endl;
+	cout << GetLocStr(99) << Unit->GetHolderCapacity() << endl;
+	cout << GetLocStr(100) << Unit->GetAccuracy() << endl;
+	cout << GetLocStr(97) << Unit->GetDamage() << endl;
+	cout << GetLocStr(101) << Unit->GetRange() << endl;
+	return os;
+}
+
+
+std::ostream& operator<<(std::ostream& os, VehicleGun* Unit)
+{
+	cout << GetLocStr(95) << Unit->GetName() << endl;
+	cout << GetLocStr(96) << Unit->GetAmmoType() << endl;
+	cout << GetLocStr(97) << Unit->GetArmorPiercing() << " " << GetLocStr(98) << Unit->GetDamage() << endl;
+	return os;
+}
+
 
 
 template <typename T>
 void IOController::PrintMyInfo(T& unit)
 {
 	cout << unit;
-}
-
-
-bool operator!( std::string & i)
-{
-	try
-	{
-		for (int j = 0; ; j++)
-			std::cout << i[j];
-	}
-	catch(int a)
-	{
-		return false;
-	}
-	return true;
 }
 
 

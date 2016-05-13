@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "DummyVehicle.h"
 
 #define WriteFile IOController::GetInstance().WriteToFile
 #define ReadFile IOController::GetInstance().ReadFromFile
@@ -12,6 +13,10 @@
 //#define PrintInfo IOController::GetInstance().PrintMyInfo
 
 
+class Gun;
+class Vehicle;
+class VehicleCrew;
+class CrewMember;
 class Soldier;
 
 struct templateIO
@@ -26,12 +31,12 @@ class IOController   //Singleton
 	friend class Interface;
 	IOController();
 public:
-
 	int WriteToFile(templateIO&, std::string) const;
 	int ReadFromFile(templateIO & myStruct, std::string, std::string, int);
 	int DeleteFromFile(int, std::string);
 	int PrintList(std::string) const;
 	int GetAllElemCount(std::string fileName) const;
+
 	templateIO InputUnitParams(std::string typeOfUnit);
 	void CheckInput(int&);
 	void CheckInput(std::string &);
@@ -43,5 +48,9 @@ public:
 	~IOController();
 };
 
-bool operator!(const std::string& i);
-std::ostream& operator<<(std::ostream& os, const Soldier& Private);
+std::ostream& operator<<(std::ostream& os, const Soldier& Unit);
+std::ostream& operator<<(std::ostream& os, const CrewMember& Unit);
+std::ostream& operator<<(std::ostream& os, const VehicleCrew& Unit);
+std::ostream& operator<<(std::ostream& os, const Vehicle& Unit);
+std::ostream& operator<<(std::ostream& os, const Gun* Unit);
+std::ostream& operator<<(std::ostream& os, const DummyVehicle& Unit);

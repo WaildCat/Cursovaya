@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cstdlib>
 #include "Officer.h"
+#include "CrewMember.h"
 
 int main()
 {

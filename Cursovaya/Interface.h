@@ -1,12 +1,16 @@
 #pragma once
 #include <vector>
 
+class Vehicle;
+class VehicleCrew;
 class Officer;
 class Soldier;
 
 class Interface
 {
 	void ControlSoldier(Soldier&, int);
+	void ControlCrew(VehicleCrew&, Vehicle&, int);
+	std::string ChooseTargetPlace();
 	void ControlHelper();
 
 	template<typename T>
@@ -16,7 +20,6 @@ class Interface
 
 	void ControlOfficerS(Officer&);
 	void ControlOfficerV(Officer&);
-	void ControlOfficerA(Officer&);
 
 public:
 	void ChoseMenu();

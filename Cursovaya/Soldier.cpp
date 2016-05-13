@@ -10,7 +10,6 @@ Soldier::Soldier()
 {
 	HumanSize = 1;
 	ShootingSkill = 75;
-	prefferedGun = "AK-47";
 	SoldierDetails();
 	MyGun = new Gun();
 	OfficerHelper::GetInstance().SetStatic(1, 1);

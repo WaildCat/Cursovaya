@@ -3,9 +3,8 @@ class Dummy
 {
 public:
 	Dummy();
-	~Dummy();
+	virtual ~Dummy();
 protected:
-	int size;
 	int hp;
 	int armor;
 };

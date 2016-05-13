@@ -6,6 +6,8 @@
 #define AssignValues Controller::GetInstance().AssignFields
 #define ChooseMyUnit Controller::GetInstance().ChooseUnit
 
+class CrewMember;
+class VehicleCrew;
 class VehicleGun;
 class Vehicle;
 class Gun;
@@ -23,10 +25,11 @@ public:
 
 	bool AssignFields(templateIO&, std::string, Soldier&);
 	bool AssignFields(templateIO&, std::string, Gun*);
-	bool AssignFields(templateIO&, std::string, Vehicle&);
+	bool AssignFields(templateIO&, std::string, Vehicle&, VehicleGun&);
 	bool AssignFields(templateIO&, std::string, VehicleGun&);
 
 	bool ChooseUnit(int&, Soldier&);
+	bool ChooseUnit(int&, CrewMember&);
 	bool ChooseUnit(int&, Vehicle&);
 	bool ChooseUnit(int&, Gun*);
 
@@ -34,3 +37,5 @@ public:
 private:
 	Controller();
 };
+
+bool operator!(const VehicleCrew&);
