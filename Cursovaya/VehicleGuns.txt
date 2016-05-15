@@ -1,1 +1,1 @@
-Gun_calibre_100 ArmorPiercing 1000 350
+NewGun ArmorPiercing 1000 350 1 

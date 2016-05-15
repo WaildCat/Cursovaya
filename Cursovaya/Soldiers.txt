@@ -1,6 +1,3 @@
-Kuslan Pilipenko TaDavai 1 1 
-Artemiy Pilipenko TaDavai 1 2 
-Semen Pilipenko TaDavai 1 3 
-Anton Pilipenko TaDavai 1 4 
-vlad Pilipenko TaDavai 1 5 
-K J L 99 6 
+Sanya Ivanov ForExample 57 1 
+Artem Pilipenko Art 1 2 
+Roman Mazalov Ls 56 3 

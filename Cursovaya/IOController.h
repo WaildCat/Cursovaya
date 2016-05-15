@@ -54,3 +54,4 @@ std::ostream& operator<<(std::ostream& os, const VehicleCrew& Unit);
 std::ostream& operator<<(std::ostream& os, const Vehicle& Unit);
 std::ostream& operator<<(std::ostream& os, const Gun* Unit);
 std::ostream& operator<<(std::ostream& os, const DummyVehicle& Unit);
+std::ostream& operator<<(std::ostream& os, VehicleGun* Unit);

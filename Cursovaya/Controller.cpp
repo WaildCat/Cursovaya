@@ -201,6 +201,7 @@ bool Controller::ChooseUnit(int & number, Vehicle& myUnit)
 		if (AssignValues(sArrGun, unitType, newGun))
 		{
 			if (AssignValues(sArr, unitType, myUnit, newGun))
+
 				return true;
 			else
 			{

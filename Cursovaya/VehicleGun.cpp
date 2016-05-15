@@ -4,8 +4,9 @@
 
 VehicleGun::VehicleGun()
 {
+	SetName("D-39");
 	SetAmmoType("ArmorPiercing");
-	SetArmorPiercing(200);
+	SetArmorPiercing(75);
 	SetDamage(100);
 }
 

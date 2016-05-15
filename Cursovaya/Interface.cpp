@@ -483,9 +483,9 @@ void Interface::ControlOfficerV(Officer& General)
 			do
 			{
 				cout << endl;
-				std::cout << "1 - " << GetLocStr(1) << std::endl;
-				std::cout << "2 - " << GetLocStr(48) << std::endl;
-				std::cout << "3 - " << GetLocStr(58) << std::endl;
+				std::cout << "1 - " << "Изменить наводчика" << std::endl;
+				std::cout << "2 - " << "Изменить стрелка" << std::endl;
+				std::cout << "3 - " << "Изменить заряжающего" << std::endl;
 				std::cout << "ESC - " << GetLocStr(8) << std::endl;
 				key1 = getch();
 				switch (key1)

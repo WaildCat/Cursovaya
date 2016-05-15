@@ -59,7 +59,7 @@ void DummyVehicle::ReceiveDamage(std::string position, int damage, double coeffi
 				int isExplosion = rand() % 100;
 
 				if (isExplosion < explCoeff)
-					this->KillVehicle();
+					delete this;
 			}
 
 			if (ifHitTM > 15)

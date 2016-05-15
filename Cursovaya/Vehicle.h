@@ -48,6 +48,7 @@ protected:
 
 public:
 	VehicleGun *MyGun;
+
 	int GetArmor(std::string position, int turnDegree) const;
 	int GetBDurability() const { return myBody.durability; }
 	int GetEDurability() const { return myBody.myEngine.durability; }

@@ -192,9 +192,9 @@ int IOController::PrintList(std::string fileName) const
 					stringLength--;
 				}
 
-				while (invertOneElem[i] != ' ')
+				while (invertOneElem[i + 2] != ' ')
 				{
-					std::cout << invertOneElem[i];
+					std::cout << invertOneElem[i + 2];
 					i++;
 				}
 				std::cout << " - ";
@@ -334,7 +334,7 @@ std::ostream& operator<<(std::ostream& os, const Vehicle& Unit)
 	cout << GetLocStr(88) << Unit.GetBDurability() << " " << GetLocStr(89) << Unit.GetEDurability() << endl;
 	cout << GetLocStr(90) << Unit.GetTMDurability() << " " << GetLocStr(91) << Unit.GetADurability() << endl;
 	cout << GetLocStr(92) << Unit.GetTDurability() << endl;
-	cout << Unit.MyGun;
+	cout << endl << Unit.MyGun;
 	return os;
 }
 
@@ -365,9 +365,9 @@ std::ostream& operator<<(std::ostream& os, Gun* Unit)
 
 std::ostream& operator<<(std::ostream& os, VehicleGun* Unit)
 {
-	cout << GetLocStr(95) << Unit->GetName() << endl;
-	cout << GetLocStr(96) << Unit->GetAmmoType() << endl;
-	cout << GetLocStr(97) << Unit->GetArmorPiercing() << " " << GetLocStr(98) << Unit->GetDamage() << endl;
+	cout << GetLocStr(94) << Unit->GetName() << endl;
+	cout << GetLocStr(95) << Unit->GetAmmoType() << endl;
+	cout << GetLocStr(96) << Unit->GetArmorPiercing() << " " << GetLocStr(97) << Unit->GetDamage() << endl;
 	return os;
 }
 
